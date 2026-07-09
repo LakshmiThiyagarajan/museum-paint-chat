@@ -1,0 +1,184 @@
+/* ============ ROOT ============ */
+.landing {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  /* Mughal collage image — place image at: frontend_react/public/mughal-bg.jpg
+     SVG pattern shows as fallback until the image is added */
+  background-color: #fdf0d0;
+  background-image: url('/mughal-bg.jpg'), url('/bg-pattern.svg');
+  background-size: cover, 280px 280px;
+  background-position: center, top left;
+  background-repeat: no-repeat, repeat;
+}
+
+/* ============ BACKGROUND LAYER ============ */
+.bg-layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Decorative circle */
+.dec-circle {
+  position: absolute;
+  width: clamp(320px, 55vmin, 580px);
+  height: clamp(320px, 55vmin, 580px);
+  border-radius: 50%;
+  border: 1px solid rgba(100, 60, 160, 0.12);
+  top: 50%;
+  right: 8%;
+  transform: translateY(-50%);
+  animation: circle-breathe 22s ease-in-out infinite;
+}
+
+.dec-circle::after {
+  content: '';
+  position: absolute;
+  inset: 14%;
+  border-radius: 50%;
+  border: 1px solid rgba(100, 60, 160, 0.07);
+}
+
+@keyframes circle-breathe {
+  0%, 100% { transform: translateY(-50%) scale(1); }
+  50%       { transform: translateY(-53%) scale(1.03); }
+}
+
+/* ============ SOLID WHITE PANEL ============ */
+.landing-panel {
+  position: relative;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  padding: 44px 52px 48px;
+  text-align: center;
+  max-width: 510px;
+  width: 88%;
+
+  background: #ffffff;
+  border-radius: 3px;
+
+  box-shadow:
+    0 24px 64px rgba(80, 30, 140, 0.15),
+    0  6px 20px rgba(80, 30, 140, 0.1);
+
+  animation: panel-rise 1.1s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+}
+
+@keyframes panel-rise {
+  from { opacity: 0; transform: translateY(22px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ============ TITLE ============ */
+.main-title {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: clamp(28px, 4.2vw, 58px);
+  font-weight: 400;
+  font-style: italic;
+  color: #2d0a5e;
+  line-height: 1.1;
+  letter-spacing: -0.5px;
+  white-space: nowrap;
+}
+
+/* ============ ORNAMENT DIVIDER ============ */
+.panel-divider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 75%;
+}
+
+.div-line {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(120, 60, 180, 0.35), transparent);
+}
+
+.div-diamond {
+  width: 13px;
+  height: 13px;
+  flex-shrink: 0;
+}
+
+/* ============ SUBTITLE & DESCRIPTION ============ */
+.sub-title {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: clamp(14px, 1.8vw, 19px);
+  font-style: italic;
+  font-weight: 400;
+  color: #6b35b0;
+  letter-spacing: 0.5px;
+}
+
+.landing-desc {
+  font-family: 'Crimson Text', Georgia, serif;
+  font-size: clamp(15px, 1.6vw, 18px);
+  font-style: italic;
+  color: #6b35b0;
+  line-height: 1.7;
+  letter-spacing: 0.2px;
+}
+
+/* ============ BUTTON — bare text, no outline ============ */
+.enter-btn {
+  margin-top: 6px;
+  padding: 6px 2px;
+  cursor: pointer;
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: clamp(15px, 1.7vw, 18px);
+  font-style: italic;
+  letter-spacing: 0.5px;
+  color: #5a1a9a;
+
+  background: none;
+  border: none;
+  box-shadow: none;
+  outline: none;
+
+  transition: color 0.25s ease, letter-spacing 0.25s ease;
+}
+
+.enter-btn:hover {
+  color: #9030d0;
+  letter-spacing: 1.5px;
+}
+
+/* ============ CORNER ACCENTS ============ */
+.corner {
+  position: absolute;
+  width: 48px;
+  height: 48px;
+  pointer-events: none;
+  z-index: 4;
+}
+
+.corner-tl { top: 22px;    left: 22px; }
+.corner-tr { top: 22px;    right: 22px; }
+.corner-bl { bottom: 22px; left: 22px; }
+.corner-br { bottom: 22px; right: 22px; }
+
+/* ============ RESPONSIVE ============ */
+@media (max-width: 600px) {
+  .landing-panel {
+    padding: 36px 28px 40px;
+    gap: 16px;
+  }
+  .main-title { font-size: clamp(22px, 7vw, 34px); }
+  .dec-circle { display: none; }
+  .corner     { width: 34px; height: 34px; }
+  .corner-tl, .corner-tr { top: 14px; }
+  .corner-bl, .corner-br { bottom: 14px; }
+  .corner-tl, .corner-bl { left: 14px; }
+  .corner-tr, .corner-br { right: 14px; }
+}

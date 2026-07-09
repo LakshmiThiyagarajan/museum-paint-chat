@@ -1,0 +1,2 @@
+/* Global baseline — all component and museum styles live in App.css and component CSS files */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }

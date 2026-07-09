@@ -1,0 +1,94 @@
+/* ============ GLOBAL RESET ============ */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body, #root {
+  height: 100%;
+  overflow: hidden;
+}
+
+body {
+  font-family: 'Crimson Text', Georgia, serif;
+  background: #ece8ff;
+  color: #ede8ff;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ============ DARK LAVENDER PALETTE ============ */
+:root {
+  /* Backgrounds */
+  --bg-base:        #0d0b18;
+  --bg-layer:       #13102a;
+
+  /* Accent */
+  --accent:         #c4b0f5;
+  --accent-dim:     rgba(196, 176, 245, 0.45);
+  --accent-faint:   rgba(196, 176, 245, 0.12);
+
+  /* Text */
+  --text-primary:   #ede8ff;
+  --text-warm:      #d8d0f8;
+  --text-muted:     rgba(196, 176, 245, 0.45);
+
+  /* Glass panels */
+  --glass-bg:       rgba(110, 90, 180, 0.08);
+  --glass-border:   rgba(180, 160, 255, 0.16);
+  --glass-blur:     backdrop-filter: blur(18px);
+
+  /* Picture frame — cool silver-violet */
+  --frame-grad: linear-gradient(
+    135deg,
+    #3a3260 0%,
+    #5a4c8a 18%,
+    #2e2850 42%,
+    #524580 65%,
+    #3a3260 100%
+  );
+}
+
+/* ============ PAGE SYSTEM ============ */
+.app-shell {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.page {
+  position: fixed;
+  inset: 0;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.7s ease;
+  z-index: 1;
+}
+
+.page.active {
+  opacity: 1;
+  pointer-events: all;
+  z-index: 2;
+}
+
+/* ============ SHARED BACK BUTTON ============ */
+.back-btn {
+  background: var(--glass-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--glass-border);
+  color: var(--accent);
+  padding: 8px 16px;
+  font-family: 'Crimson Text', Georgia, serif;
+  font-size: 14px;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s;
+  border-radius: 0;
+  white-space: nowrap;
+}
+
+.back-btn:hover {
+  background: rgba(196, 176, 245, 0.15);
+  border-color: var(--accent-dim);
+}

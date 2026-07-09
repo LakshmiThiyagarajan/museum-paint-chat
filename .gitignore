@@ -1,0 +1,9 @@
+venv/
+.env
+__pycache__/
+.vscode
+memory.db
+node_modules/
+dist/
+*.log
+.git-old-v3-backup/
