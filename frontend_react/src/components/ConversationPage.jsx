@@ -9,7 +9,9 @@ import {
 } from '../constants'
 import './ConversationPage.css'
 
-const API_URL = '/chat'
+const API_URL = import.meta.env.VITE_API_URL
+  ? `${import.meta.env.VITE_API_URL}/chat`
+  : '/chat'
 
 const SESSION_ID = (() => {
   let id = localStorage.getItem('paintchat_session')
@@ -118,6 +120,7 @@ export default function ConversationPage({ painting, initialCharacter, onBack })
         headers: { 'Content-Type': 'application/json' },
         body:    JSON.stringify({ session_id: SESSION_ID, painting, character, message: msg }),
       })
+      if (!res.ok) throw new Error('Request failed')
       const json = await res.json()
       setMessages(prev => [...prev, { type: 'char', text: json.reply, char: character }])
     } catch {

@@ -1,4 +1,4 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from openai import OpenAI
@@ -30,12 +30,16 @@ app = FastAPI()
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
-    allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+
+
+@app.get("/health")
+def health_check():
+    return {"status": "ok"}
 
 
 class ChatRequest(BaseModel):
@@ -116,12 +120,23 @@ You MUST call this tool when the user asks about:
 - Any historical or factual context about the painting itself
 Do NOT attempt to answer these questions from your own knowledge. Call the tool instead.
 
+[Search Query Requirements]
+Your query argument MUST include both the specific painting title and the artist's name Raja Ravi Varma.
+NEVER use a generic phrase like "who painted you" or "what year" as the query.
+Good example: "Mohini on a Swing Raja Ravi Varma painting year"
+Bad example: "who painted you and what year"
+
 [Using Search Results]
 When search results are provided to you, only use information from:
 - Academic or educational sources (.edu, .ac.in)
 - Established cultural institutions (museums, universities, galleries)
 - Known art history websites and encyclopedias (Wikipedia, Britannica)
 Ignore anything that reads like a blog, social media post, or opinion piece.
+
+[Handling Incomplete Results]
+If the search results do not explicitly state the specific fact being asked — for example, no year is mentioned for this particular painting — do NOT guess, infer, or use your general knowledge of the artist to fill in the gap.
+Instead, say in character that you do not have that precise detail: "I have heard many things spoken of me, but that particular detail has not reached my ears."
+Never invent a year, date, or specific fact that is not present in the search results.
 """
 
 def build_prompt(knowledge, memory_summary):
@@ -268,11 +283,14 @@ def generate_reply(session_id: str, painting: str, character: str, message: str)
 
 @app.post("/chat")
 def chat(req: ChatRequest):
-    reply = generate_reply(
-        req.session_id, 
-        req.painting,
-        req.character,
-        req.message
-    )
-
-    return {"reply": reply}
+    try:
+        reply = generate_reply(
+            req.session_id,
+            req.painting,
+            req.character,
+            req.message
+        )
+        return {"reply": reply}
+    except Exception as e:
+        print(f"[/chat error] {e}")
+        raise HTTPException(status_code=502, detail="The character is momentarily unreachable.")

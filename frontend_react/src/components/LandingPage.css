@@ -8,13 +8,11 @@
   align-items: center;
   justify-content: center;
 
-  /* Mughal collage image — place image at: frontend_react/public/mughal-bg.jpg
-     SVG pattern shows as fallback until the image is added */
   background-color: #fdf0d0;
-  background-image: url('/mughal-bg.jpg'), url('/bg-pattern.svg');
-  background-size: cover, 280px 280px;
-  background-position: center, top left;
-  background-repeat: no-repeat, repeat;
+  background-image: url('/mughal-bg.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
 /* ============ BACKGROUND LAYER ============ */
