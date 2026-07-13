@@ -18,7 +18,7 @@ function Ornament() {
   )
 }
 
-export default function LandingPage({ onEnter }) {
+export default function LandingPage({ onEnter, onAbout }) {
   return (
     <div className="landing">
 
@@ -41,6 +41,10 @@ export default function LandingPage({ onEnter }) {
 
         <button className="enter-btn" onClick={onEnter}>
           Begin the Conversation &rarr;
+        </button>
+
+        <button className="about-link-btn" onClick={onAbout}>
+          About this project
         </button>
       </div>
 

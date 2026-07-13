@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import LandingPage from './components/LandingPage'
 import GalleryPage from './components/GalleryPage'
 import ConversationPage from './components/ConversationPage'
+import AboutPage from './components/AboutPage'
 import './App.css'
 
 export default function App() {
@@ -36,7 +37,11 @@ export default function App() {
   return (
     <div className="app-shell">
       <div className={`page ${page === 'landing' ? 'active' : ''}`}>
-        <LandingPage onEnter={() => goTo('gallery')} />
+        <LandingPage onEnter={() => goTo('gallery')} onAbout={() => goTo('about')} />
+      </div>
+
+      <div className={`page ${page === 'about' ? 'active' : ''}`}>
+        <AboutPage onBack={() => window.history.back()} />
       </div>
 
       <div className={`page ${page === 'gallery' ? 'active' : ''}`}>

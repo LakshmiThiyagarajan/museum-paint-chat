@@ -1,104 +1,95 @@
 # Chat With Painting
 
-An AI-powered interactive system where users can step into a painting and converse with the characters inside it.
+An AI-powered interactive system where users step into a painting and converse with the characters inside it.
 
-This project explores how prompt engineering, memory, and system design progressively improve character immersion, historical grounding, and resistance to prompt injection across multiple iterations.
+**Live: [museum-paint-chat.vercel.app](https://museum-paint-chat.vercel.app)**
 
----
+This project explores how prompt engineering, memory, tool calling, and system design progressively improve character immersion, historical grounding, and resistance to prompt injection across multiple iterations. The current live version features six paintings by Raja Ravi Varma, real-time web search for historical accuracy, persistent conversation memory, and voice input.
 
 ## Project Idea
 
-Instead of chatting with a generic AI assistant, the user selects a painting and speaks to the characters living inside that artwork.
+Instead of chatting with a generic AI assistant, the user selects a painting and speaks to the characters living inside that artwork. Ask about their day, their feelings, or real historical facts about the painting and its artist, the system knows the difference and answers accordingly.
 
----
+## Features
+
+- **In-character roleplay** across six characters, each with their own personality, scene, and speaking style
+- **Persistent memory** per session, so characters recall earlier parts of the conversation
+- **Tool calling** for historical accuracy: when asked factual questions (who painted this, what year), the system searches the web live via Serper.dev rather than guessing from the model's training data
+- **Hallucination guarding**: characters admit uncertainty rather than inventing facts when search results are incomplete
+- **Voice input** via the browser's native Web Speech API, no external service required
+- **Deployed and publicly accessible**, not just a local prototype
+
+## Tech Stack
+
+**Frontend**
+- Vite + React 18
+- Browser-native voice input (Web Speech API)
+- Deployed on Vercel
+
+**Backend**
+- FastAPI (Python)
+- SQLite via SQLAlchemy for session memory
+- OpenAI API (GPT-4o-mini) for character responses
+- Serper.dev for live web search / tool calling
+- Deployed on Render
 
 ## Repository Structure
 
 ```
-Chat-with-paint
-│
-├── V1 (branch)
-├── V2 (branch)
-└── V3 (main)
-    ├── backend/
-    ├── frontend/
-    ├── V3_prompt.pdf
-    └── evaluation/
-        ├── V1_notes.md
-        ├── V2_notes.md
-        ├── V3_notes.md
-        └── V1_V2_V3_comparison_notes.md
+museum-paint-chat/
+├── backend/
+│   ├── main.py           # API routes, prompt building, tool calling, memory
+│   ├── prompts.py        # Base character instructions
+│   ├── database.py       # SQLAlchemy models
+│   ├── knowledge/        # Per-character knowledge files
+│   └── requirements.txt
+├── frontend_react/
+│   ├── src/
+│   │   ├── App.jsx
+│   │   ├── constants.js
+│   │   └── components/   # Landing, Gallery, Conversation, About pages
+│   └── public/images/    # Painting artwork
+└── README.md
 ```
 
-Each version shows a clear evolution of the system.
+## Version History
 
----
-
-## Version Evolution
-
-| Version | Key Focus | Limitations | Improvements |
-|---------|-----------|-------------|--------------|
-| V1 | Static character prompts | Weak grounding, easy role break | Baseline behavior study |
-| V2 | Strong prompt constraints | No memory, emotional drift | Role protection and historical anchoring |
-| V3 | Memory, chat UI, dynamic prompts | — | Persistent memory, better immersion, adversarial resistance |
-
----
-
-## Evaluation Method
-
-All versions were tested using:
-
-- 10 Standard Prompts (identity, setting, tone, role break tests)
-- 10 Adversarial and Memory Prompts (prompt injection, emotional redirection, context recall)
-
-Results and observations are documented in the `evaluation/` folder.
-
----
-
-## Tech Stack
-
-### Backend
-- FastAPI  
-- SQLite  
-- OpenAI API  
-- Session-based memory storage  
-
-### Frontend
-- Vanilla HTML, CSS, JavaScript  
-- Chat-style UI  
-- Local session tracking  
-
----
+This is the current (v3+) iteration of a project that has gone through several rounds of prompt and architecture evolution, from a static single-painting prototype to the current deployed system with memory, tool calling, and a full React frontend. Earlier evaluation notes (adversarial prompt testing, role-break resistance, memory recall testing) from prior versions are preserved in project history.
 
 ## How to Run Locally
 
-### Backend
-
-```
+**Backend**
+```bash
 cd backend
-uvicorn main:app --reload --host 0.0.0.0 --port 8000
+pip install -r requirements.txt
+uvicorn main:app --reload --port 8000
 ```
 
-### Frontend
-
-```
-cd frontend
-python3 -m http.server 5500
-```
-
-Open in browser:
-
-```
-http://localhost:5500
+**Frontend**
+```bash
+cd frontend_react
+npm install
+npm run dev
 ```
 
----
+Open `http://localhost:5173`. The Vite dev server proxies `/chat` requests to the backend automatically.
+
+You'll need your own API keys in a `.env` file at the project root:
+```
+OPENAI_API_KEY=your_key_here
+SERPER_API_KEY=your_key_here
+```
+
+## About
+
+This project sits at the intersection of AI engineering and museum studies. Full story, and more about the MeiMeraki brand, on the [About page](https://museum-paint-chat.vercel.app/about).
+
+- [GitHub](https://github.com/LakshmiThiyagarajan/museum-paint-chat)
+- [LinkedIn](https://linkedin.com/in/lakshmichitra-thiyagarajan)
+- [MeiMeraki](https://youtube.com/@MeiMeraki)
 
 ## Future Improvements
 
-- Multi-painting memory  
-- Better memory summarization  
-- Streaming responses  
-- Deployment  
-
----
+- Multi-painting shared memory
+- Streaming responses
+- Persistent database (currently resets on backend redeploy, a known free-tier tradeoff)
