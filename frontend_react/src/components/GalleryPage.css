@@ -475,43 +475,66 @@
 }
 
 @media (max-width: 560px) {
+  /* ── Native page scroll: break the fixed-height shell while gallery is active ──
+     :has() selectors activate only when .gallery-page is the active page and
+     revert automatically when navigation moves to any other page. */
+  html:has(.page.active .gallery-page),
+  body:has(.page.active .gallery-page),
+  #root:has(.page.active .gallery-page) {
+    overflow: visible;
+    height: auto;
+  }
+  .app-shell:has(.page.active .gallery-page) {
+    height: auto;
+  }
+  .page:has(.gallery-page).active {
+    position: relative;
+    top: auto; right: auto; bottom: auto; left: auto;
+    height: auto;
+    overflow: visible;
+  }
+
+  /* Gallery page: grow to natural content height */
+  .gallery-page {
+    height: auto;
+    min-height: 100dvh;
+    overflow: visible;
+  }
+
   .gallery-header        { padding: 14px 16px 0; }
   .gallery-tagline-panel { padding: 10px 20px; }
   .gallery-tagline       { white-space: normal; font-size: 12px; letter-spacing: 0.2px; text-align: center; }
+
+  /* Paintings: plain document-flow flex column, no scroll container */
   .gallery-paintings {
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
-    overflow-y: scroll;
-    -webkit-overflow-scrolling: touch;
-    touch-action: pan-y;
-    overscroll-behavior: contain;
-    min-height: 0;
-    max-height: calc(72vh - 68px);
-    max-height: calc(72dvh - 68px);
+    overflow: visible;
+    max-height: none;
     gap: 40px;
     padding: 20px 20px 24px;
   }
-  /* Reset desktop-only vertical nudges — these create GPU compositing layers
-     inside the scroll container that break touch routing on Android Chrome */
+
+  /* Reset desktop-only vertical nudges (meaningless in column layout) */
   .gallery-slot,
   .gallery-slot:nth-child(2),
   .gallery-slot.slot-raised,
   .gallery-slot.slot-lowered { transform: none; }
-  .frame-card  { width: 260px; }
-  .frame-outer { padding: 16px; }
+
+  .frame-card     { width: 260px; }
+  .frame-outer    { padding: 16px; }
   .painting-popup { display: none; }
-  .gallery-floor  { height: 28vh; }
-  /* Scroll affordance — fade at the bottom edge of the paintings column */
-  .gallery-page::after {
-    content: '';
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 28vh;
-    height: 56px;
-    background: linear-gradient(to bottom, transparent, rgba(15, 10, 5, 0.22));
-    pointer-events: none;
-    z-index: 3;
+
+  /* Nav: fixed to viewport bottom so it stays reachable while scrolling */
+  .gallery-nav {
+    position: fixed;
+    bottom: 16px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10;
   }
+
+  /* Floor: spacer so the fixed nav never covers the last painting */
+  .gallery-floor { height: 64px; }
 }
