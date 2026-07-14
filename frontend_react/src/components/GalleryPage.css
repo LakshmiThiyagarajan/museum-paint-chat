@@ -484,12 +484,20 @@
     align-items: center;
     overflow-y: scroll;
     -webkit-overflow-scrolling: touch;
+    touch-action: pan-y;
+    overscroll-behavior: contain;
     min-height: 0;
     max-height: calc(72vh - 68px);
     max-height: calc(72dvh - 68px);
     gap: 40px;
     padding: 20px 20px 24px;
   }
+  /* Reset desktop-only vertical nudges — these create GPU compositing layers
+     inside the scroll container that break touch routing on Android Chrome */
+  .gallery-slot,
+  .gallery-slot:nth-child(2),
+  .gallery-slot.slot-raised,
+  .gallery-slot.slot-lowered { transform: none; }
   .frame-card  { width: 260px; }
   .frame-outer { padding: 16px; }
   .painting-popup { display: none; }
