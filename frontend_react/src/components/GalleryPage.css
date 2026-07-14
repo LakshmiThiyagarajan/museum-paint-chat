@@ -482,13 +482,28 @@
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
-    overflow-y: auto;
+    overflow-y: scroll;
+    -webkit-overflow-scrolling: touch;
     min-height: 0;
+    max-height: calc(72vh - 68px);
+    max-height: calc(72dvh - 68px);
     gap: 40px;
-    padding: 20px 20px 20px;
+    padding: 20px 20px 24px;
   }
   .frame-card  { width: 260px; }
   .frame-outer { padding: 16px; }
   .painting-popup { display: none; }
   .gallery-floor  { height: 28vh; }
+  /* Scroll affordance — fade at the bottom edge of the paintings column */
+  .gallery-page::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 28vh;
+    height: 56px;
+    background: linear-gradient(to bottom, transparent, rgba(15, 10, 5, 0.22));
+    pointer-events: none;
+    z-index: 3;
+  }
 }
