@@ -64,6 +64,10 @@ export default function AboutPage({ onBack }) {
           </p>
 
           <p>
+            A bit about me. Hi, I'm Lakshmi.
+          </p>
+
+          <p>
             I started in IT, spent two years exploring archaeology and eventually landed in Museum
             Studies, a path that probably makes more sense in hindsight than it did while I was living
             it. Chat with Painting sits at that intersection and it's not just a portfolio piece to me.
